@@ -38,11 +38,6 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <% if current_user %>
-          <div class="span3">
-            <%= render :partial => 'layouts/sidebar' %>
-          </div><!--/span-->
-        <% end %>
         <div class="span9">
           <%= bootstrap_flash %>
           <%= yield %>

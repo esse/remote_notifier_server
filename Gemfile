@@ -42,3 +42,7 @@ gem 'therubyracer'
 gem 'psych'
 
 gem 'devise'
+
+gem "twitter-bootstrap-rails", :group => :assets
+
+gem 'ancestry'

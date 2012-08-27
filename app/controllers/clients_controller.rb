@@ -41,7 +41,8 @@ class ClientsController < ApplicationController
   # POST /clients.json
   def create
     @client = current_user.clients.new(params[:client])
-
+    @client.token = SecureRandom.hex(24)
+    @client.secret = SecureRandom.hex(24)
     respond_to do |format|
       if @client.save
         format.html { redirect_to @client, notice: 'Client was successfully created.' }
@@ -57,7 +58,8 @@ class ClientsController < ApplicationController
   # PUT /clients/1.json
   def update
     @client = current_user.clients.find(params[:id])
-
+    @client.token = SecureRandom.hex(24)
+    @client.secret = SecureRandom.hex(24)
     respond_to do |format|
       if @client.update_attributes(params[:client])
         format.html { redirect_to @client, notice: 'Client was successfully updated.' }

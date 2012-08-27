@@ -1,8 +1,11 @@
 class Api::V1::NotificationsController < ApplicationController
+  before_filter :authorize_api_client
+  
+  
   # GET /notifications
   # GET /notifications.json
   def index
-    @notifications = Notification.all
+    @notifications = @client.notifications.all
 
     respond_to do |format|
       format.json { render json: @notifications }
@@ -12,17 +15,7 @@ class Api::V1::NotificationsController < ApplicationController
   # GET /notifications/1
   # GET /notifications/1.json
   def show
-    @notification = Notification.find(params[:id])
-
-    respond_to do |format|
-      format.json { render json: @notification }
-    end
-  end
-
-  # GET /notifications/new
-  # GET /notifications/new.json
-  def new
-    @notification = Notification.new
+    @notification = @client.notifications.find(params[:id])
 
     respond_to do |format|
       format.json { render json: @notification }
@@ -32,14 +25,29 @@ class Api::V1::NotificationsController < ApplicationController
   # POST /notifications
   # POST /notifications.json
   def create
-    @notification = Notification.new(params[:notification])
-
+    parent_notifications = @client.notifications.where(:message => params[:notification][:message]).
+      where(:msg_class => params[:notification][:msg_class]).where(:ancestry => nil)
+    parent_notification = parent_notifications.find { |notif| notif.backtrace == params[:notification][:backtrace] }
+    if parent_notification
+      @notification = parent_notification.children.new(params[:notification].merge(:client_id => @client.id))
+    else
+      @notification = @client.notifications.new(params[:notification])
+    end
     respond_to do |format|
       if @notification.save
         format.json { render json: @notification, status: :created, location: @notification }
       else
         format.json { render json: @notification.errors, status: :unprocessable_entity }
       end
+    end
+  end
+  
+protected
+  
+  def authorize_api_client
+    authenticate_or_request_with_http_basic do |username, password|
+      @client = Client.where(:token => username).where(:secret => password).first
+      !!@client
     end
   end
 

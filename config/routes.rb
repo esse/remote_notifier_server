@@ -4,7 +4,9 @@ Server::Application.routes.draw do
   devise_for :users
 
   resources :clients do
-    resources :notifications
+    resources :notifications do
+      post :toggle
+    end
   end
   
   namespace :api do
@@ -13,7 +15,10 @@ Server::Application.routes.draw do
     end
   end
 
-  root :to => "home#index"
+  root :to => "home#logged", :constraints => lambda { |r| r.env["warden"].authenticate? }
+  root :to => "home#unlogged", :constraints => lambda { |r| !r.env["warden"].authenticate? }
+
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

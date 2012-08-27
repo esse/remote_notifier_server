@@ -11,16 +11,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120818231343) do
+ActiveRecord::Schema.define(:version => 20120827202957) do
+
+  create_table "clients", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "token"
+    t.string   "secret"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "notifications", :force => true do |t|
     t.integer  "client_id"
     t.text     "message"
     t.string   "msg_class"
     t.text     "backtrace"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "solved",     :default => false
+    t.string   "ancestry"
   end
+
+  add_index "notifications", ["ancestry"], :name => "index_notifications_on_ancestry"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

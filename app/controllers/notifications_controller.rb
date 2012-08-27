@@ -8,6 +8,11 @@ class NotificationsController < ApplicationController
       format.html # index.html.erb
     end
   end
+  
+  def toggle
+    Client.find(params[:client_id]).notifications.find(params[:notification_id]).toggle!
+    redirect_to :back
+  end
 
   # GET /notifications/1
   # GET /notifications/1.json

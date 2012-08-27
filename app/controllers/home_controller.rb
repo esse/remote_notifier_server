@@ -1,6 +1,10 @@
 class HomeController < ApplicationController
   
-  def index
+  def unlogged
+    render layout: 'unlogged'
+  end
+  
+  def logged
   end
   
 end

@@ -4,6 +4,7 @@ class CreateClients < ActiveRecord::Migration
       t.integer :user_id
       t.string :token
       t.string :secret
+      t.string :name
 
       t.timestamps
     end
