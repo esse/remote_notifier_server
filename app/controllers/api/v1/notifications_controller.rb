@@ -29,13 +29,15 @@ class Api::V1::NotificationsController < ApplicationController
       where(:msg_class => params[:notification][:msg_class]).where(:ancestry => nil)
     parent_notification = parent_notifications.find { |notif| notif.backtrace == params[:notification][:backtrace] }
     if parent_notification
-      @notification = parent_notification.children.new(params[:notification].merge(:client_id => @client.id))
+      @notification = parent_notification.children.new(params[:notification])
+      @notification.client_id = @client.id
+      parent_notification.update_attribute(:solved, false)
     else
       @notification = @client.notifications.new(params[:notification])
     end
     respond_to do |format|
       if @notification.save
-        format.json { render json: @notification, status: :created, location: @notification }
+        format.json { render json: @notification, status: :created }
       else
         format.json { render json: @notification.errors, status: :unprocessable_entity }
       end

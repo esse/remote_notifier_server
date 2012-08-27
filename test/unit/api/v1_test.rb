@@ -33,8 +33,41 @@ class V1Test < ActiveSupport::TestCase
     assert_equal "[]", last_response.body
   end
   
-  test "should create proper ancestry when creating same as existing" do
-    
+  test "should create notification" do
+    authorize 'Rainbow', 'Dash'
+    post '/api/v1/notifications.json', "notification" => { :message => 'error', :msg_class => 'Runtime error', :backtrace => 'stacktrace' }
+    assert_equal 201, last_response.status
+    assert_equal 1, Notification.count
+  end
+
+  test "should create ancestry inside notification" do
+    authorize 'Rainbow', 'Dash'
+    post '/api/v1/notifications.json', "notification" => { :message => 'error', :msg_class => 'Runtime error', :backtrace => 'stacktrace' }
+    assert_equal 201, last_response.status
+    assert_equal 1, Notification.count
+    assert Notification.first.is_root?
+    post '/api/v1/notifications.json', "notification" => { :message => 'error', :msg_class => 'Runtime error', :backtrace => 'stacktrace' }
+    assert_equal 201, last_response.status
+    assert_equal 2, Notification.count
+    assert !Notification.last.is_root?
+    assert_equal 1, Notification.first.children.count
+  end
+  
+  test "should reset solved status when creating children inside notification" do
+    authorize 'Rainbow', 'Dash'
+    post '/api/v1/notifications.json', "notification" => { :message => 'error', :msg_class => 'Runtime error', :backtrace => 'stacktrace' }
+    assert_equal 201, last_response.status
+    assert_equal 1, Notification.count
+    assert Notification.first.is_root?
+    assert !Notification.first.solved?
+    Notification.first.update_attribute(:solved, true)
+    assert Notification.first.solved?
+    post '/api/v1/notifications.json', "notification" => { :message => 'error', :msg_class => 'Runtime error', :backtrace => 'stacktrace' }
+    assert_equal 201, last_response.status
+    assert_equal 2, Notification.count
+    assert !Notification.last.is_root?
+    assert_equal 1, Notification.first.children.count
+    assert !Notification.first.solved?
   end
 
 end
