@@ -7,6 +7,7 @@ Server::Application.routes.draw do
     resources :notifications do
       post :toggle
     end
+    resources :user_client_accesses
   end
   
   namespace :api do

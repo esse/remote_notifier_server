@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   # GET /notifications
   # GET /notifications.json
   def index
-    @notifications = Notification.all
+    @notifications = current_user.find_client(params[:client_id]).notifications.root.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -10,71 +10,30 @@ class NotificationsController < ApplicationController
   end
   
   def toggle
-    Client.find(params[:client_id]).notifications.find(params[:notification_id]).toggle!
+    current_user.find_client(params[:client_id]).notifications.find(params[:notification_id]).toggle!
     redirect_to :back
   end
 
   # GET /notifications/1
   # GET /notifications/1.json
   def show
-    @notification = Notification.find(params[:id])
+    @notification = current_user.find_client(params[:client_id]).notifications.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
     end
   end
 
-  # GET /notifications/new
-  # GET /notifications/new.json
-  def new
-    @notification = Notification.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-    end
-  end
-
-  # GET /notifications/1/edit
-  def edit
-    @notification = Notification.find(params[:id])
-  end
-
-  # POST /notifications
-  # POST /notifications.json
-  def create
-    @notification = Notification.new(params[:notification])
-
-    respond_to do |format|
-      if @notification.save
-        format.html { redirect_to @notification, notice: 'Notification was successfully created.' }
-      else
-        format.html { render action: "new" }
-      end
-    end
-  end
-
-  # PUT /notifications/1
-  # PUT /notifications/1.json
-  def update
-    @notification = Notification.find(params[:id])
-
-    respond_to do |format|
-      if @notification.update_attributes(params[:notification])
-        format.html { redirect_to @notification, notice: 'Notification was successfully updated.' }
-      else
-        format.html { render action: "edit" }
-      end
-    end
-  end
 
   # DELETE /notifications/1
   # DELETE /notifications/1.json
   def destroy
-    @notification = Notification.find(params[:id])
+    client = current_user.find_client(params[:client_id])
+    @notification = client.notifications.find(params[:id])
     @notification.destroy
 
     respond_to do |format|
-      format.html { redirect_to notifications_url }
+      format.html { redirect_to client_notifications_url(client) }
     end
   end
 end

@@ -1,10 +1,12 @@
-<h1>Listing notifications</h1>
+<h2>Listing notifications</h2>
 
 <table class='table table-striped'>
   <tr>
     <th>Message</th>
-    <th>Msg class</th>
-    <th></th>
+    <th>Class of message</th>
+    <th>Number of occurence</th>
+    <th>First occurence</th>
+    <th>Last occurence</th>
     <th></th>
     <th>Solved?</th>
   </tr>
@@ -13,8 +15,11 @@
   <tr>
     <td><%= notification.message %></td>
     <td><%= notification.msg_class %></td>
-    <td><%= link_to 'Show', client_notification_path(notification.client, notification), :class => 'btn btn-mini' %></td>
-    <td><%= link_to 'Destroy', [notification.client, notification], method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' %></td>
+    <td><%= notification.children.count + 1 %></td>
+    <td><%= notification.created_at.strftime("%H:%M %d-%m-%Y") %></td>
+    <td><%= notification.children.last ? notification.children.last.created_at.strftime("%H:%M %d-%m-%Y") : notification.created_at.strftime("%H:%M %d-%m-%Y")  %></td>
+    <td><%= link_to 'Show', client_notification_path(notification.client, notification), :class => 'btn btn-mini' %>
+    <%= link_to 'Destroy', [notification.client, notification], method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' %></td>
     <td><%= link_to (notification.solved? ? "<i class='icon-ok'/>" : "<i class='icon-remove'/>").html_safe, client_notification_toggle_path(notification.client, notification), :method => :post %></td>
   </tr>
 <% end %>

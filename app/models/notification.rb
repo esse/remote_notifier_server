@@ -17,4 +17,8 @@ class Notification < ActiveRecord::Base
     end
   end
   
+  def self.root
+    where(:ancestry => nil)
+  end
+  
 end

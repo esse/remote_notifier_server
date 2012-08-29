@@ -11,8 +11,21 @@
 </p>
 
 <p>
-  <b>Msg class:</b>
+  <b>Class of message:</b>
   <%= @notification.msg_class %>
+</p>
+
+<p>
+  <b>Number of occurences:</b>
+  <%= @notification.children.count + 1 %>
+</p>
+
+<p>
+  <b>Datetime of occurences:</b>
+  <%= @notification.created_at.strftime("%H:%M %d-%m-%Y") %>
+  <% @notification.children.each do |children| %>
+     | <%= children.created_at.strftime("%H:%M %d-%m-%Y") %>
+  <% end %>
 </p>
 
 <p>

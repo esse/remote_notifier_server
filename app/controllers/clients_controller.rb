@@ -76,6 +76,7 @@ class ClientsController < ApplicationController
   def destroy
     @client = current_user.clients.find(params[:id])
     @client.destroy
+    @client.children.each { |x| x.destroy }
 
     respond_to do |format|
       format.html { redirect_to clients_url }

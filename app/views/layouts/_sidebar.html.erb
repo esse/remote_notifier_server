@@ -1,7 +1,7 @@
 <div class="well sidebar-nav">
   <ul class="nav nav-list">
     <li class="nav-header">Notifications for clients</li>
-    <% current_user.clients.each do |client| %>
+    <% current_user.all_clients.each do |client| %>
       <li><%= link_to client.name, client_notifications_path(client) %>
     <% end %>
   </ul>

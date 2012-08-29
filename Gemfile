@@ -46,3 +46,9 @@ gem 'devise'
 gem "twitter-bootstrap-rails", :group => :assets
 
 gem 'ancestry'
+
+gem 'resque'
+
+gem 'resque_mailer'
+
+gem 'chosen-rails'

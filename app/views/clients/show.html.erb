@@ -1,6 +1,6 @@
 <%- model_class = Client -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+  <h2><%=t '.title', :default => model_class.model_name.human %></h2>
 </div>
 
 <dl class="dl-horizontal">
@@ -13,6 +13,19 @@
   <dt><strong><%= model_class.human_attribute_name(:secret) %>:</strong></dt>
   <dd><%= @client.secret %></dd>
 </dl>
+
+<div>
+  <b>User with access (except you):</b>
+  <% @client.user_client_accesses.each do |acc| %>
+    <%= acc.user.email %>
+    <%= link_to 'x', client_user_client_access_path(@client, acc), :method => :delete, :confirm => 'Are you sure?' %>
+  <% end %>
+  <br />
+  <br />
+  Add user with access, providing email:<br />
+  <form method="post" action="<%= client_user_client_accesses_path(@client) %>">
+  <input name="email" id="email" />
+</div>
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),

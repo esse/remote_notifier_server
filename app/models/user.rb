@@ -10,4 +10,19 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   
   has_many :clients
+  
+  has_many :accessing_clients, :through => :user_client_accesses, :source => :client
+  
+  has_many :user_client_accesses
+  
+  def all_clients
+    x = clients || []
+    y = accessing_clients || []
+    x+y
+  end
+  
+  def find_client(c_id)
+    clients.find(c_id) || accessing_clients.find(c_id)
+  end
+  
 end
