@@ -1,7 +1,7 @@
 class Api::V1::NotificationsController < ApplicationController
   before_filter :authorize_api_client
   
-  
+=begin
   # GET /notifications
   # GET /notifications.json
   def index
@@ -21,6 +21,7 @@ class Api::V1::NotificationsController < ApplicationController
       format.json { render json: @notification }
     end
   end
+=end
 
   # POST /notifications
   # POST /notifications.json

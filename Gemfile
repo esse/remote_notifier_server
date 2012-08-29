@@ -51,4 +51,4 @@ gem 'resque'
 
 gem 'resque_mailer'
 
-gem 'chosen-rails'
+gem 'kaminari'

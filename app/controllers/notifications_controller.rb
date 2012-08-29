@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   # GET /notifications
   # GET /notifications.json
   def index
-    @notifications = current_user.find_client(params[:client_id]).notifications.root.all
+    @notifications = current_user.find_client(params[:client_id]).notifications.root.page(params[:page] || 1)
 
     respond_to do |format|
       format.html # index.html.erb

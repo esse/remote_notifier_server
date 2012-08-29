@@ -33,9 +33,6 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
-    chosen-rails (0.9.8.2)
-      railties (~> 3.0)
-      thor (~> 0.14)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -59,6 +56,10 @@ GEM
       railties (>= 3.1.0, < 5.0)
       thor (~> 0.14)
     json (1.7.5)
+    kaminari (0.13.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     less (2.2.1)
       commonjs (~> 0.2.6)
     less-rails (2.2.3)
@@ -151,10 +152,10 @@ PLATFORMS
 
 DEPENDENCIES
   ancestry
-  chosen-rails
   coffee-rails (~> 3.2.1)
   devise
   jquery-rails
+  kaminari
   psych
   rails (= 3.2.8)
   resque
